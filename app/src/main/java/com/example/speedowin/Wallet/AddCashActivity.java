@@ -1,56 +1,53 @@
 package com.example.speedowin.Wallet;
 
+
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.speedowin.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AddCashActivity extends AppCompatActivity {
 
-    private EditText bankingNameEditText;
-    private EditText upiIdEditText;
-    private EditText transactionIdEditText;
-    private EditText utrEditText;
-    private EditText transactionTimeEditText;
+    private EditText amountInput, bankingNameInput, transactionIdInput, utrInput, transactionTimeInput;
     private Button addCashButton;
+    private ProgressBar progressBar;
 
-    private DatabaseReference userRef;
-    private DatabaseReference transactionsRef;
-    private String userId;
+    // Initialize Firebase Authentication and Database
+    private FirebaseAuth auth;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_cash);
+        setContentView(R.layout.activity_add_cash); // Update the layout file name accordingly
 
-        bankingNameEditText = findViewById(R.id.bankingName);
-        upiIdEditText = findViewById(R.id.upiId);
-        transactionIdEditText = findViewById(R.id.transactionId);
-        utrEditText = findViewById(R.id.utr);
-        transactionTimeEditText = findViewById(R.id.transactionTime);
+        // Initialize views
+        amountInput = findViewById(R.id.amount);
+        bankingNameInput = findViewById(R.id.bankingNameInput);
+        transactionIdInput = findViewById(R.id.transactionIdInput);
+        utrInput = findViewById(R.id.utrInput);
+        transactionTimeInput = findViewById(R.id.transactionTimeInput);
         addCashButton = findViewById(R.id.addCashButton);
+        progressBar = findViewById(R.id.progressBar);
 
-        // Get the current user ID
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            userId = user.getUid(); // Get user ID
-            userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId); // Reference to user
-            transactionsRef = FirebaseDatabase.getInstance().getReference("Transactions"); // Reference to transactions
-        } else {
-            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity if the user is not authenticated
-        }
+        // Initialize Firebase Authentication and Database Reference
+        auth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users"); // Set to Users
 
+        // Set OnClickListener for the Add Cash button
         addCashButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,63 +57,54 @@ public class AddCashActivity extends AppCompatActivity {
     }
 
     private void addCash() {
-        String bankingName = bankingNameEditText.getText().toString().trim();
-        String upiId = upiIdEditText.getText().toString().trim();
-        String transactionId = transactionIdEditText.getText().toString().trim();
-        String utr = utrEditText.getText().toString().trim();
-        String transactionTime = transactionTimeEditText.getText().toString().trim();
+        // Get the current user
+        String userId = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
 
-        // Validate inputs
-        if (bankingName.isEmpty() || upiId.isEmpty() || transactionId.isEmpty() || utr.isEmpty() || transactionTime.isEmpty()) {
-            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
+        if (userId == null) {
+            Toast.makeText(this, "You must be logged in to make a request.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Create a transaction object with a pending approval status
-        Transaction transaction = new Transaction(bankingName, upiId, transactionId, utr, transactionTime, "pending");
+        String amount = amountInput.getText().toString().trim();
+        String bankingName = bankingNameInput.getText().toString().trim();
+        String transactionId = transactionIdInput.getText().toString().trim();
+        String utr = utrInput.getText().toString().trim();
+        String transactionTime = transactionTimeInput.getText().toString().trim();
 
-        // Save the transaction to the user's record in the Realtime Database
-        userRef.child("addcash").push().setValue(transaction) // Save in user-specific addcash node
-                .addOnSuccessListener(aVoid -> {
-                    // Save the transaction also in a general Transactions node
-                    transactionsRef.push().setValue(transaction)
-                            .addOnSuccessListener(aVoid1 -> {
-                                Toast.makeText(AddCashActivity.this, "Transaction added successfully! Waiting for admin approval.", Toast.LENGTH_SHORT).show();
-                                clearFields();
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(AddCashActivity.this, "Failed to save transaction in Transactions: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            });
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(AddCashActivity.this, "Failed to add transaction: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-    }
-
-    private void clearFields() {
-        bankingNameEditText.setText("");
-        upiIdEditText.setText("");
-        transactionIdEditText.setText("");
-        utrEditText.setText("");
-        transactionTimeEditText.setText("");
-    }
-
-    // Transaction class
-    public static class Transaction {
-        String bankingName;
-        String upiId;
-        String transactionId;
-        String utr;
-        String time;
-        String status;
-
-        public Transaction(String bankingName, String upiId, String transactionId, String utr, String time, String status) {
-            this.bankingName = bankingName;
-            this.upiId = upiId;
-            this.transactionId = transactionId;
-            this.utr = utr;
-            this.time = time;
-            this.status = status;
+        // Validate input
+        if (TextUtils.isEmpty(amount) || TextUtils.isEmpty(bankingName) || TextUtils.isEmpty(transactionId) ||
+                TextUtils.isEmpty(utr) || TextUtils.isEmpty(transactionTime)) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        // Check if amount is greater than 50
+        if (Integer.parseInt(amount) <= 50) {
+            Toast.makeText(this, "Enter an amount greater than 50", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Show progress bar
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Create a new user entry or update existing user entry with cash request details
+        Map<String, Object> userUpdates = new HashMap<>();
+        userUpdates.put("amount", amount);
+        userUpdates.put("bankingName", bankingName);
+        userUpdates.put("transactionId", transactionId);
+        userUpdates.put("utr", utr);
+        userUpdates.put("transactionTime", transactionTime);
+        userUpdates.put("status", "pending"); // Set status to pending for admin approval
+
+        // Save the request to Firebase under the current user ID
+        databaseReference.child(userId).updateChildren(userUpdates)
+                .addOnCompleteListener(task -> {
+                    progressBar.setVisibility(View.GONE);
+                    if (task.isSuccessful()) {
+                        Toast.makeText(AddCashActivity.this, "Cash request submitted for approval.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(AddCashActivity.this, "Failed to submit request. Try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

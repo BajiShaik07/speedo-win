@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="#03A9F4">
 
     <LinearLayout
         android:id="@+id/topToggleLayout"
@@ -68,10 +68,23 @@
                 />
 
             <EditText
-                android:id="@+id/bankingName"
+                android:id="@+id/amount"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Bank Name"
+                android:hint="Enter Amount Greter than 50 rupess"
+                android:drawableStart="@drawable/ic_profile"
+                android:drawablePadding="16dp"
+                android:drawableTint="#00BCD4"
+                android:textColorHint="#CE000000"
+                android:textColor="#00BCD4"
+                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="25dp"
+                android:background="@drawable/edittext_background"/>
+            <EditText
+                android:id="@+id/bankingNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Banking Name"
                 android:drawableStart="@drawable/ic_profile"
                 android:drawablePadding="16dp"
                 android:drawableTint="#00BCD4"
@@ -82,21 +95,7 @@
                 android:background="@drawable/edittext_background"/>
 
             <EditText
-                android:id="@+id/upiId"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="UPI ID"
-                android:textColorHint="#CE000000"
-                android:textColor="#00BCD4"
-                android:drawableStart="@drawable/upi"
-                android:drawablePadding="16dp"
-                android:drawableTint="#00BCD4"
-                android:layout_marginBottom="20dp"
-                android:layout_marginHorizontal="25dp"
-                android:background="@drawable/edittext_background"/>
-
-            <EditText
-                android:id="@+id/transactionId"
+                android:id="@+id/transactionIdInput"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Transaction ID"
@@ -110,7 +109,7 @@
                 android:background="@drawable/edittext_background"/>
 
             <EditText
-                android:id="@+id/utr"
+                android:id="@+id/utrInput"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="UTR"
@@ -124,7 +123,7 @@
                 android:background="@drawable/edittext_background"/>
 
             <EditText
-                android:id="@+id/transactionTime"
+                android:id="@+id/transactionTimeInput"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:drawableStart="@drawable/date"
@@ -142,26 +141,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add Cash"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:backgroundTint="@android:color/transparent"
                 android:layout_marginBottom="20dp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#FF5722"
                 android:textStyle="bold"
-                android:background="#3C000000"
                 android:textSize="20sp"
+                android:layout_margin="15dp"
                 android:text="After the payment is successfully done, click on the 'I have paid' button, fill in all details about your last transaction, and wait for admin approval."
-                android:layout_marginBottom="10dp"/>
+                />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:background="#3C000000"
+                android:layout_margin="15dp"
                 android:textSize="20sp"
                 android:text="చెల్లింపు విజయవంతంగా జరిగి, 'నేను చెల్లించాను' బటన్‌పై క్లిక్ చేయండి, మీ చివరి లావాదేవీ గురించి అన్ని వివరాలను పూరించండి, మరియు నిర్వాహక అనుమతి కోసం వేచి ఉండండి."
-                android:layout_marginBottom="10dp"/>
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -169,12 +172,19 @@
                 android:textColor="#0CE115"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:background="#3C000000"
+                android:layout_margin="15dp"
                 android:text="भुगतान सफलतापूर्वक करने के बाद, 'मैंने भुगतान किया है' बटन पर क्लिक करें, अपनी अंतिम लेन-देन के सभी विवरण भरें, और प्रशासक की स्वीकृति की प्रतीक्षा करें।"
                 android:layout_marginBottom="10dp"/>
         </LinearLayout>
     </ScrollView>
 
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:background="#11000000"
+        android:indeterminateTint="#BDBDBD" />
 
 </RelativeLayout>

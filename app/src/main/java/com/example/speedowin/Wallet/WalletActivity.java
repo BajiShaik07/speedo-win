@@ -68,8 +68,8 @@ public class WalletActivity extends AppCompatActivity {
         refreshWalletButton.setOnClickListener(v -> fetchWalletData());
 
         addMoneyButton.setOnClickListener(v -> {
-            depositCash += 100; // Assuming you add ₹100
-            updateDepositCash(depositCash);
+            startActivity(new Intent(WalletActivity.this, AddCashActivity.class));
+            finish();
         });
 
         contactUsButton.setOnClickListener(v -> {
