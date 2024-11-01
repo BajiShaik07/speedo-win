@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Match.AtoZGameActivity">
+
+    <!-- Total Balance TextView -->
+    <TextView
+        android:id="@+id/totalBalanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Balance: ₹0"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <!-- Deposit Cash TextView -->
+    <TextView
+        android:id="@+id/depositCashText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deposit Cash: ₹0"
+        android:textSize="20sp"
+        android:layout_below="@id/totalBalanceText"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true" />
+
+    <!-- Winning Cash TextView -->
+    <TextView
+        android:id="@+id/winningCashText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Winning Cash: ₹0"
+        android:textSize="20sp"
+        android:layout_below="@id/depositCashText"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true" />
+
+    <!-- Free Card Button -->
+    <Button
+        android:id="@+id/freeCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Free"
+        android:textSize="18sp"
+        android:layout_below="@id/winningCashText"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/black" />
+
+    <!-- ₹5 Card Button -->
+    <Button
+        android:id="@+id/bid5Card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="₹5"
+        android:textSize="18sp"
+        android:layout_below="@id/freeCard"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/black" />
+
+    <!-- ₹10 Card Button -->
+    <Button
+        android:id="@+id/bid10Card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="₹10"
+        android:textSize="18sp"
+        android:layout_below="@id/bid5Card"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/black" />
+
+    <!-- ₹20 Card Button -->
+    <Button
+        android:id="@+id/bid20Card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="₹20"
+        android:textSize="18sp"
+        android:layout_below="@id/bid10Card"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/black" />
+    <Button
+        android:layout_below="@+id/bid20Card"
+        android:id="@+id/refreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Refresh Balance"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="16dp" />
+
+
+</RelativeLayout>

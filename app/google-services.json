@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1012410371123",
+    "project_id": "speedo-win",
+    "storage_bucket": "speedo-win.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012410371123:android:11cd7fac212e1a8468a746",
+        "android_client_info": {
+          "package_name": "com.example.speedowin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFbuE0pBMQirBLNi9p0dUYoz5wiCWs3pM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
